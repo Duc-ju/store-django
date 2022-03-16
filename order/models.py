@@ -6,7 +6,7 @@ from user.models import User, Address
 class Cart(models.Model):
     createdAt= models.DateTimeField(auto_now_add=True)
     updatedAt= models.DateTimeField(auto_now=True)
-    user= models.ForeignKey(User, on_delete=models.CASCADE)
+    user= models.OneToOneField(User, on_delete=models.CASCADE, related_name='cart')
 
 
 class CartBookItem(models.Model):

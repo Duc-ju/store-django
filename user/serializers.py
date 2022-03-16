@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import User, Address
-from order.models import Cart
 
 class AddressSerializer(serializers.ModelSerializer):
 
@@ -11,11 +10,9 @@ class AddressSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     addresses = AddressSerializer(many=True)
 
-
-
     class Meta:
         model = User
-        fields = ['id', 'username', 'displayName', 'email', 'photoUrl', 'addresses']
+        fields = ['id', 'username', 'displayName', 'email', 'photoUrl', 'addresses', 'cart']
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
