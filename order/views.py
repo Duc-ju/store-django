@@ -24,8 +24,8 @@ class CartDetailAPIView(APIView):
         data = request.data
         try:
             quantity = data['quantity']
-            id = data['id']
-            cart_book_item = CartBookItem.objects.get(pk=id)
+            key = data['cartBookItem']
+            cart_book_item = CartBookItem.objects.get(pk=key)
             cart_book_item.quantity = quantity
             cart_book_item.save()
             try:
@@ -63,8 +63,8 @@ class CartDetailAPIView(APIView):
 
     def delete(self, request, pk):
         try:
-            id = request.data['id']
-            cart_book_item = CartBookItem.objects.get(pk=id)
+            key = request.data['cartBookItem']
+            cart_book_item = CartBookItem.objects.get(pk=key)
             cart_book_item.delete()
             try:
                 cart = Cart.objects.get(pk=pk)
@@ -73,7 +73,7 @@ class CartDetailAPIView(APIView):
             serializer = CartSerializer(cart)
             return Response(serializer.data)
         except:
-            return Response(status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class OrderDetailAPIView(APIView):
