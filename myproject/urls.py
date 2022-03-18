@@ -12,9 +12,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/book/', include('book.urls')),
-    path('api/order/', include('order.urls')),
-    path('api/users/', include('user.urls')),
+    path('v1/api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('v1/api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('v1/api/', include('book.urls')),
+    path('v1/api/', include('order.urls')),
+    path('v1/api/', include('user.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

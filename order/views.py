@@ -20,22 +20,6 @@ class CartDetailAPIView(APIView):
         serializer = CartSerializer(cart)
         return Response(serializer.data)
 
-    def put(self, request, pk):
-        data = request.data
-        try:
-            quantity = data['quantity']
-            key = data['cartBookItem']
-            cart_book_item = CartBookItem.objects.get(pk=key)
-            cart_book_item.quantity = quantity
-            cart_book_item.save()
-            try:
-                cart = Cart.objects.get(pk=pk)
-            except Cart.DoesNotExist:
-                return Response(status=status.HTTP_404_NOT_FOUND)
-            serializer = CartSerializer(cart)
-            return Response(serializer.data)
-        except:
-            return Response(status.HTTP_400_BAD_REQUEST)
 
     def post(self, request, pk):
         try:
@@ -61,13 +45,67 @@ class CartDetailAPIView(APIView):
         except:
             return Response(status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk):
+
+class CartListAPIView(APIView):
+    def post(self, request, pk):
+        new_cart = Cart(user_id=pk)
+        new_cart.save()
         try:
-            key = request.data['cartBookItem']
-            cart_book_item = CartBookItem.objects.get(pk=key)
+            cart = Cart.objects.get(pk=pk)
+        except Cart.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = CartSerializer(cart)
+        return Response(serializer.data)
+
+
+
+class CartBookItemListAPIView(APIView):
+    def post(self, request, pk):
+        data = request.data
+        quantity = data['quantity']
+        check = False
+        book_item = BookItem.objects.get(pk=data['bookItem'])
+        cart_book_items = CartBookItem.objects.filter(cart_id=pk)
+        for cart_book_item in cart_book_items:
+            if cart_book_item.bookItem.id == book_item.id:
+                cart_book_item.quantity = cart_book_item.quantity + quantity
+                cart_book_item.save()
+                check = True
+        if not check:
+            cart = Cart.objects.get(pk=pk)
+            CartBookItem(cart=cart, bookItem=book_item, quantity=quantity).save()
+        try:
+            cart = Cart.objects.get(pk=pk)
+        except Cart.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = CartSerializer(cart)
+        return Response(serializer.data)
+
+
+class CartBookItemDetailAPIView(APIView):
+
+    def patch(self, request, cart_pk, cart_book_item_pk):
+        data = request.data
+        try:
+            quantity = data['quantity']
+            cart_book_item = CartBookItem.objects.get(pk=cart_book_item_pk)
+            cart_book_item.quantity = quantity
+            cart_book_item.save()
+            try:
+                cart = Cart.objects.get(pk=cart_pk)
+            except Cart.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            serializer = CartSerializer(cart)
+            return Response(serializer.data)
+        except:
+            return Response(status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, cart_pk, cart_book_item_pk):
+        try:
+            cart_book_item = CartBookItem.objects.get(pk=cart_book_item_pk)
             cart_book_item.delete()
             try:
-                cart = Cart.objects.get(pk=pk)
+                cart = Cart.objects.get(pk=cart_pk)
             except Cart.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
             serializer = CartSerializer(cart)
