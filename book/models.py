@@ -13,7 +13,7 @@ class Publisher(models.Model):
 
 class Author(models.Model):
     name = models.CharField(max_length=255)
-    biography = models.CharField(max_length=255)
+    biography = models.TextField(max_length=1023)
 
 
 class Book(models.Model):
@@ -28,14 +28,13 @@ class Book(models.Model):
 
 class BookItem(models.Model):
     price = models.FloatField(default=0)
-    description = models.CharField(max_length=255)
+    description = models.TextField(max_length=8191)
     barcode = models.CharField(max_length=255)
-    header = models.CharField(max_length=1023)
+    header = models.TextField(max_length=1023)
     discount = models.FloatField(default=0)
     book = models.OneToOneField(Book, on_delete=models.CASCADE)
 
 
 class BookItemImage(models.Model):
     bookItem = models.ForeignKey(BookItem, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='images/book_items_images/')
-    index = models.IntegerField()
+    image = models.ImageField(upload_to='images/book_item_images/')

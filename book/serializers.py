@@ -33,7 +33,7 @@ class BookSerializer(serializers.ModelSerializer):
 class BookItemImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookItemImage
-        fields = ['id', 'image', 'index']
+        fields = ['id', 'image']
 
 
 class BookItemDetailSerializer(serializers.ModelSerializer):
@@ -53,7 +53,7 @@ class BookItemListSerializer(serializers.ModelSerializer):
         fields = ['id','image','header', 'price', 'discount']
 
     def get_image(self, obj):
-        image = BookItemImage.objects.filter(bookItem_id=obj.id, index=0)
+        image = BookItemImage.objects.filter(bookItem_id=obj.id)
         if image.count()==0:
             return ''
         return image[0].image.url

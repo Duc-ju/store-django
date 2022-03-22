@@ -1,10 +1,21 @@
 from django.contrib import admin
-from .models import MalePant, MaleShirt, KidClothes, FemalePant, FemaleShirt, Dress, ClothesItemImage
+from .models import KidClothes, MalePant, MaleShirt, FemalePant, FemaleShirt, Dress, KidClothesItem, MalePantItem, MaleShirtItem, FemalePantItem, FemaleShirtItem, DressItem, KidClothesItemImage, MalePantItemImage, MaleShirtItemImage, FemalePantItemImage, FemaleShirtItemImage, DressItemImage
 # Register your models here.
+admin.site.register(KidClothes)
 admin.site.register(MalePant)
 admin.site.register(MaleShirt)
-admin.site.register(KidClothes)
 admin.site.register(FemalePant)
 admin.site.register(FemaleShirt)
 admin.site.register(Dress)
-admin.site.register(ClothesItemImage)
+admin.site.register(KidClothesItem)
+admin.site.register(MalePantItem)
+admin.site.register(MaleShirtItem)
+admin.site.register(FemalePantItem)
+admin.site.register(FemaleShirtItem)
+admin.site.register(DressItem)
+admin.site.register(KidClothesItemImage)
+admin.site.register(MalePantItemImage)
+admin.site.register(MaleShirtItemImage)
+admin.site.register(FemalePantItemImage)
+admin.site.register(FemaleShirtItemImage)
+admin.site.register(DressItemImage)
